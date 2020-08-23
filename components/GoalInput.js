@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { TextInput, Button, View, StyleSheet } from 'react-native'
+import { TextInput, Button, View, StyleSheet, Modal, ProgressBarAndroidComponent } from 'react-native'
 
 const GoalInput = props => {
 
@@ -8,17 +8,26 @@ const GoalInput = props => {
     const goalInputHandler = enteredText => {
         setEnteredGoal(enteredText)
     }
+
+    const addGoalHandler = () => {
+        props.onAddGoal(enteredGoal)
+        setEnteredGoal('')
+
+    }
     
     return (
-        <View style={styles.inputContainer}>
-            <TextInput 
-            placeholder='Enter your goal' 
-            style={styles.input} 
-            onChangeText={goalInputHandler}
-            value={enteredGoal}
-            />
-            <Button title='ADD' onPress={() => props.onAddGoal(enteredGoal)}/>
-        </View>    
+        <Modal visible={props.visible} animationType="slide">
+            <View style={styles.inputContainer}>
+                <TextInput 
+                placeholder='Enter your goal' 
+                style={styles.input} 
+                onChangeText={goalInputHandler}
+                value={enteredGoal}
+                />
+                <Button title='CANCEL' color='red' onPress={props.onCancel}/>
+                <Button title='ADD' onPress={addGoalHandler}/>
+            </View>   
+        </Modal>     
     )
 }
 
@@ -32,9 +41,9 @@ const styles = StyleSheet.create({
       padding: 10 
     },
     inputContainer: { 
-        flexDirection: 'row', 
         justifyContent: 'space-between',
-        alignItems: "center"
-      }
+        alignItems: "center",
+        flex: 1
+    }
 })
 
