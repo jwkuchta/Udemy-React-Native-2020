@@ -1,6 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, View, Button, Text, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, TextInput, View, Button, Text, ScrollView, FlatList } from 'react-native'
+import GoalItem from './components/GoalItem'
+import GoalInput from './components/GoalInput'
 
 export default function App() {
 
@@ -14,24 +16,15 @@ export default function App() {
   const addGoalHandler = () => {
     setGoals(goals => [...goals, { key: Math.random().toString(), value: input }])
   }
+
   return (
     <View style={styles.screen}>
       <View style={styles.inputContainer}>
-        <TextInput 
-        placeholder='Enter your goal' 
-        style={styles.input} 
-        onChangeText={inputHandler}
-        value={input}
-        />
-        <Button title='ADD' onPress={addGoalHandler}/>
+        <GoalInput input={input} addGoal={addGoalHandler} inputHandler={inputHandler}/>
       </View>
       <FlatList 
       data={goals} 
-      renderItem={ itemData => (
-      <View style={styles.listItem} key={itemData.item.key}>
-        <Text>{itemData.item.value}</Text>
-      </View>
-      )}>
+      renderItem={ itemData => <GoalItem item={itemData}/>}>
       </FlatList>
     </View>
   )
@@ -45,19 +38,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row', 
     justifyContent: 'space-between',
     alignItems: "center"
-  },
-  input: { 
-    width: '80%', 
-    borderBottomColor: 'grey', 
-    borderBottomWidth: 1, 
-    padding: 10 
-  },
-  listItem: {
-    padding: 10,
-    margin: 10,
-    backgroundColor: '#ccc',
-    borderColor: 'black',
-    borderWidth: 1
   }
 })
 
